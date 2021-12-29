@@ -8,23 +8,23 @@ import { Repository } from 'typeorm';
 export class MonstersService {
   constructor(
     @InjectRepository(MonsterEntity)
-    private monstersRepository: Repository<MonsterEntity>
-  ) { }
+    private monstersRepository: Repository<MonsterEntity>,
+  ) {}
 
   addMonster(item: MonsterDto): Promise<MonsterDto> {
-    return this.monstersRepository.save(item)
+    return this.monstersRepository.save(item);
   }
 
   async deleteMonster(id: number): Promise<MonsterDto> {
-    const itemToDelete = await this.monstersRepository.findOne(id)
-    return this.monstersRepository.remove(itemToDelete)
+    const itemToDelete = await this.monstersRepository.findOne(id);
+    return this.monstersRepository.remove(itemToDelete);
   }
 
   getMonster(id: number): Promise<MonsterDto> {
-    return this.monstersRepository.findOne(id)
+    return this.monstersRepository.findOne(id);
   }
 
   getAllMonsters(): Promise<MonsterDto[]> {
-    return this.monstersRepository.find()
+    return this.monstersRepository.find();
   }
 }

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsString } from 'class-validator';
 
 export class MonsterDto {
   @IsNumber()
@@ -15,5 +15,4 @@ export class MonsterDto {
 
   @IsNumber()
   speed: number;
-
 }

@@ -8,23 +8,32 @@ import { Repository } from 'typeorm';
 export class ItemsService {
   constructor(
     @InjectRepository(ItemsEntity)
-    private itemsRepository: Repository<ItemsEntity>
-  ) { }
+    private itemsRepository: Repository<ItemsEntity>,
+  ) {}
 
   addItem(item: ItemDto): Promise<ItemDto> {
-    return this.itemsRepository.save(item)
+    return this.itemsRepository.save(item);
   }
 
   async deleteItem(id: number): Promise<ItemDto> {
-    const itemToDelete = await this.itemsRepository.findOne(id)
-    return this.itemsRepository.remove(itemToDelete)
+    const itemToDelete = await this.itemsRepository.findOne(id);
+    return this.itemsRepository.remove(itemToDelete);
   }
 
   getItem(id: number): Promise<ItemDto> {
-    return this.itemsRepository.findOne(id)
+    return this.itemsRepository.findOne(id);
   }
 
-  getAllItems(): Promise<ItemDto[]> {
-    return this.itemsRepository.find()
+  async getAllItems(query: { [key: string]: string }): Promise<ItemDto[]> {
+    let response = await this.itemsRepository.find();
+    const queryList = Object.keys(query);
+    if (queryList.length > 0) {
+      queryList.map((queryKey) => {
+        response = response.filter(
+          (item) => item[queryKey] === query[queryKey],
+        );
+      });
+    }
+    return response;
   }
 }

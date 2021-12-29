@@ -1,28 +1,36 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ItemDto } from '../dto/item.dto';
 import { ItemsService } from '../service/items/items.service';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private itemsService: ItemsService) { }
+  constructor(private itemsService: ItemsService) {}
 
-  @Post("/")
+  @Post('/')
   addItem(@Body() item: ItemDto): Promise<ItemDto> {
-    return this.itemsService.addItem(item)
+    return this.itemsService.addItem(item);
   }
 
   @Delete('/:id')
   deleteItem(@Param() { id }: { id: number }): Promise<ItemDto> {
-    return this.itemsService.deleteItem(id)
+    return this.itemsService.deleteItem(id);
   }
 
-  @Get("/:id")
+  @Get('/:id')
   getItem(@Param() { id }: { id: number }): Promise<ItemDto> {
-    return this.itemsService.getItem(id)
+    return this.itemsService.getItem(id);
   }
 
-  @Get("/")
-  getAllItems(): Promise<ItemDto[]> {
-    return this.itemsService.getAllItems()
+  @Get('/')
+  getAllItems(@Query() query): Promise<ItemDto[]> {
+    return this.itemsService.getAllItems(query);
   }
 }
