@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsString } from 'class-validator';
 
 export class ItemDto {
   @IsNumber()
@@ -24,5 +24,4 @@ export class ItemDto {
 
   @IsNumber()
   speed: number;
-
 }

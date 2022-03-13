@@ -7,6 +7,6 @@ import { ItemsService } from './service/items/items.service';
 @Module({
   imports: [TypeOrmModule.forFeature([ItemsEntity])],
   controllers: [ItemsController],
-  providers: [ItemsService]
+  providers: [ItemsService],
 })
-export class ItemsModule { }
+export class ItemsModule {}
