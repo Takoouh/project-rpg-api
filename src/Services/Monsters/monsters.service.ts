@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MonsterDto } from 'src/Dto/Monster/monster.dto';
 import { MonsterEntity } from 'src/Entity/Monsters/monsters.entity';
@@ -21,7 +21,17 @@ export class MonstersService {
   }
 
   getMonster(id: number): Promise<MonsterDto> {
-    return this.monstersRepository.findOne(id);
+    const monsterInfo = this.monstersRepository.findOne(id);
+    if (!monsterInfo) {
+      throw new HttpException(
+        {
+          status: 500,
+          error: `The monster with id ${id} doesn't exist`,
+        },
+        500,
+      );
+    }
+    return monsterInfo;
   }
 
   getAllMonsters(): Promise<MonsterDto[]> {

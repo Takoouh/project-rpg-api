@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsObject, IsString } from 'class-validator';
 
 export class ItemDto {
   @IsNumber()
@@ -24,4 +24,12 @@ export class ItemDto {
 
   @IsNumber()
   speed: number;
+}
+
+export class ItemListDto {
+  @IsObject()
+  item: ItemDto;
+
+  @IsNumber()
+  quantity: number;
 }

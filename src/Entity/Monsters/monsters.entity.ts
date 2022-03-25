@@ -16,4 +16,7 @@ export class MonsterEntity {
 
   @Column({ nullable: false })
   speed: number;
+
+  @Column({ nullable: false, default: 0 })
+  gold: number;
 }

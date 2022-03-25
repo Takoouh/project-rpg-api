@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CharacterDto,
@@ -26,6 +26,15 @@ export class CharactersService {
 
   async findCharacter(id: number): Promise<CharacterInfoFormattedDto> {
     const characterInfo = await this.charactersRepository.findOne(id);
+    if (!characterInfo) {
+      throw new HttpException(
+        {
+          status: 500,
+          error: `The character with id ${id} doesn't exist`,
+        },
+        500,
+      );
+    }
     return formatCharactersInfos(characterInfo);
   }
 
