@@ -1,6 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { BattleInfoDto, BattleTableDto } from 'src/Dto/Battle/battle.dto';
 import { BattleEntity } from 'src/Entity/Battle/battle.entity';
+import { attributeMonsterLoot } from 'src/Helpers/BattleHelper/BattleHelper';
 import { Repository } from 'typeorm';
 import { CharacterItemsService } from '../Characters/characterItems.service';
 import { CharactersService } from '../Characters/characters.service';
@@ -73,15 +74,7 @@ export class BattleService {
 
     //if monster has been killed, we attribute reward
     if (isMonsterKo) {
-      const acquiredLoot = [];
-
-      monsterInfo.potentialItemDrop.forEach((drop) => {
-        const randomNumber = Math.random() * 100;
-        if (drop.dropRate <= randomNumber) {
-          acquiredLoot.push(drop.item);
-        }
-      });
-
+      const acquiredLoot = attributeMonsterLoot(monsterInfo.potentialItemDrop);
       const playerWithReward = {
         gold: characterInfo.gold + monsterInfo.gold,
         experience: characterInfo.experience + monsterInfo.experience,
@@ -89,7 +82,7 @@ export class BattleService {
       this.battleRepository.remove(battleData);
       this.charactersService.updateCharacter(characterId, playerWithReward);
       acquiredLoot.map((item) =>
-        this.characterItemService.addItemToCharacter(characterInfo.id, item.id),
+        this.characterItemService.addItemToCharacter(characterId, item.id),
       );
       return {
         monsterRemainingLife: 0,
@@ -103,6 +96,11 @@ export class BattleService {
     }
 
     //if monster is still alive, it retaliate
+    const characterLifeAfterRetaliation =
+      characterInfo.remaining_life_point - monsterInfo.strengh;
+    this.charactersService.updateCharacter(characterId, {
+      remaining_life_point: characterLifeAfterRetaliation,
+    });
     this.battleRepository.update(
       { id: battleId },
       { monsterRemainingLife: newMonsterRemainingLife },

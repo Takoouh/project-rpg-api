@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { IsArray, IsBoolean, IsNumber } from 'class-validator';
-import { ItemListDto } from '../Item/item.dto';
+import { ItemDto } from '../Item/item.dto';
 
 export class BattleTableDto {
   @IsNumber()
@@ -34,7 +34,7 @@ class BattleRewardDto {
   gold: number;
 
   @IsArray()
-  items: ItemListDto[]
+  items: ItemDto[]
 }
 
 export class BattleInfoDto {
