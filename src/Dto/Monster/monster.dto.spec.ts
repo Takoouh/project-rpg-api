@@ -1,7 +1,7 @@
-import { MonsterDto } from './monsters.dto';
+import { MonsterTableDto } from './monsters.dto';
 
-describe('MonsterDto', () => {
+describe('MonsterTableDto', () => {
   it('should be defined', () => {
-    expect(new MonsterDto()).toBeDefined();
+    expect(new MonsterTableDto()).toBeDefined();
   });
 });

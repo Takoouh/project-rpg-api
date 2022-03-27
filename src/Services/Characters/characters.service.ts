@@ -1,8 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  CharacterDto,
-  CharacterInfoFormattedDto,
+  CharacterTableDto,
+  CharacterFullInfosDto,
+  CharacterEditInfoDto,
+  CharacterMinimumInfosDto,
 } from '../../Dto/Character/character.dto';
 import { CharactersEntity } from '../../Entity/Characters/characters.entity';
 import { formatCharactersInfos } from '../../Helpers/CharactersHelper/charactersHelpers';
@@ -15,17 +17,24 @@ export class CharactersService {
     private charactersRepository: Repository<CharactersEntity>,
   ) { }
 
-  create(character: CharacterDto): Promise<CharacterDto> {
+  create(character: CharacterTableDto): Promise<CharacterTableDto> {
     return this.charactersRepository.save(character);
   }
 
-  async deleteCharacter(id: number): Promise<CharacterDto> {
+  async deleteCharacter(id: number): Promise<CharacterTableDto> {
     const characterToDelete = await this.charactersRepository.findOne(id);
     return this.charactersRepository.remove(characterToDelete);
   }
 
-  async findCharacter(id: number): Promise<CharacterInfoFormattedDto> {
-    const characterInfo = await this.charactersRepository.findOne(id);
+  async updateCharacter(id: number, newCharacterInfos: CharacterEditInfoDto) {
+    return this.charactersRepository.update({ id }, newCharacterInfos);
+  }
+
+  async findCharacter(id: number): Promise<CharacterFullInfosDto> {
+    const characterInfo = await this.charactersRepository.findOne({
+      where: { id },
+      relations: ['items'],
+    });
     if (!characterInfo) {
       throw new HttpException(
         {
@@ -38,7 +47,7 @@ export class CharactersService {
     return formatCharactersInfos(characterInfo);
   }
 
-  findAll(): Promise<CharacterDto[]> {
+  findAll(): Promise<CharacterMinimumInfosDto[]> {
     return this.charactersRepository.find();
   }
 }

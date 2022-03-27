@@ -1,7 +1,7 @@
-import { CharacterDto } from './character.dto';
+import { CharacterTableDto } from './character.dto';
 
-describe('CharacterDto', () => {
+describe('CharacterTableDto', () => {
   it('should be defined', () => {
-    expect(new CharacterDto()).toBeDefined();
+    expect(new CharacterTableDto()).toBeDefined();
   });
 });

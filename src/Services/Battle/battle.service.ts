@@ -2,6 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BattleInfoDto, BattleTableDto } from 'src/Dto/Battle/battle.dto';
 import { BattleEntity } from 'src/Entity/Battle/battle.entity';
 import { Repository } from 'typeorm';
+import { CharacterItemsService } from '../Characters/characterItems.service';
 import { CharactersService } from '../Characters/characters.service';
 import { MonstersService } from '../Monsters/monsters.service';
 
@@ -11,6 +12,7 @@ export class BattleService {
     private battleRepository: Repository<BattleEntity>,
     private charactersService: CharactersService,
     private monsterService: MonstersService,
+    private characterItemService: CharacterItemsService,
   ) { }
 
   async initBattle({
@@ -59,24 +61,48 @@ export class BattleService {
 
   async playerAttack(battleId: number): Promise<BattleInfoDto> {
     const battleData = await this.battleRepository.findOne(battleId);
-    const { characterId, /*monsterId,*/ monsterRemainingLife } = battleData;
+    const { characterId, monsterId, monsterRemainingLife } = battleData;
     const characterInfo = await this.charactersService.findCharacter(
       characterId,
     );
-    // const monsterInfo = await this.monsterService.getMonster(monsterId);
+    const monsterInfo = await this.monsterService.getMonster(monsterId);
     const newMonsterRemainingLife =
       monsterRemainingLife - characterInfo.stats.strength;
 
     const isMonsterKo = newMonsterRemainingLife <= 0;
 
+    //if monster has been killed, we attribute reward
     if (isMonsterKo) {
+      const acquiredLoot = [];
+
+      monsterInfo.potentialItemDrop.forEach((drop) => {
+        const randomNumber = Math.random() * 100;
+        if (drop.dropRate <= randomNumber) {
+          acquiredLoot.push(drop.item);
+        }
+      });
+
+      const playerWithReward = {
+        gold: characterInfo.gold + monsterInfo.gold,
+        experience: characterInfo.experience + monsterInfo.experience,
+      };
       this.battleRepository.remove(battleData);
+      this.charactersService.updateCharacter(characterId, playerWithReward);
+      acquiredLoot.map((item) =>
+        this.characterItemService.addItemToCharacter(characterInfo.id, item.id),
+      );
       return {
         monsterRemainingLife: 0,
-        reward: [],
+        isBattleOver: true,
+        reward: {
+          experience: monsterInfo.experience,
+          gold: monsterInfo.gold,
+          items: acquiredLoot,
+        },
       };
     }
 
+    //if monster is still alive, it retaliate
     this.battleRepository.update(
       { id: battleId },
       { monsterRemainingLife: newMonsterRemainingLife },
@@ -84,7 +110,8 @@ export class BattleService {
 
     return {
       monsterRemainingLife: newMonsterRemainingLife,
-      reward: [],
+      isBattleOver: false,
+      reward: { experience: 0, gold: 0, items: [] },
     };
   }
 }

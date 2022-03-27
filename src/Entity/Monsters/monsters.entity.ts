@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MonsterItemsEntity } from './monstersItem.entity';
 @Entity('monsters')
 export class MonsterEntity {
   @PrimaryGeneratedColumn()
@@ -17,6 +17,12 @@ export class MonsterEntity {
   @Column({ nullable: false })
   speed: number;
 
-  @Column({ nullable: false, default: 0 })
+  @Column({ nullable: false })
   gold: number;
+
+  @Column({ nullable: false })
+  experience: number;
+
+  @OneToMany(() => MonsterItemsEntity, (monstersItems) => monstersItems.monster)
+  potentialItemDrop: MonsterItemsEntity[];
 }

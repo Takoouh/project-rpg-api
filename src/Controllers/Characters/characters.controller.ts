@@ -1,33 +1,50 @@
 import { Body, Param, Controller, Get, Post, Delete } from '@nestjs/common';
+import { CharacterItemsService } from 'src/Services/Characters/characterItems.service';
 import {
-  CharacterDto,
-  CharacterInfoFormattedDto,
+  CharacterTableDto,
+  CharacterFullInfosDto,
+  CharacterMinimumInfosDto,
 } from '../../Dto/Character/character.dto';
 import { CharactersService } from '../../Services/Characters/characters.service';
 
 @Controller('characters')
 export class CharactersController {
-  constructor(private charactersService: CharactersService) { }
+  constructor(
+    private charactersService: CharactersService,
+    private characterItemsService: CharacterItemsService,
+  ) { }
 
   @Post('/')
-  create(@Body() character: CharacterDto): Promise<CharacterDto> {
+  create(@Body() character: CharacterTableDto): Promise<CharacterTableDto> {
     return this.charactersService.create(character);
   }
 
   @Delete('/:id')
-  deleteCharacter(@Param() { id }: { id: number }): Promise<CharacterDto> {
+  deleteCharacter(@Param() { id }: { id: number }): Promise<CharacterTableDto> {
     return this.charactersService.deleteCharacter(id);
   }
 
   @Get('/:id')
   findCharacter(
     @Param() { id }: { id: number },
-  ): Promise<CharacterInfoFormattedDto> {
+  ): Promise<CharacterFullInfosDto> {
     return this.charactersService.findCharacter(id);
   }
 
   @Get('/')
-  findAll(): Promise<CharacterDto[]> {
-    return this.charactersService.findAll();
+  async findAll(): Promise<CharacterMinimumInfosDto[]> {
+    const charactersList = await this.charactersService.findAll();
+    return charactersList.map(({ id, name, level }) => ({
+      id,
+      name,
+      level,
+    }));
+  }
+
+  @Post('/:characterId/addItem/:itemId')
+  addItemToCharacter(
+    @Param() { characterId, itemId }: { characterId: number; itemId: number },
+  ): Promise<CharacterFullInfosDto> {
+    return this.characterItemsService.addItemToCharacter(characterId, itemId);
   }
 }

@@ -1,12 +1,12 @@
 import {
-  CharacterDto,
-  CharacterInfoFormattedDto,
+  CharacterFullInfosDto,
+  CharacterTableWithItemsDto,
 } from '../../Dto/Character/character.dto';
 
 export const formatCharactersInfos = (
-  charactersInfo: CharacterDto,
-): CharacterInfoFormattedDto => {
-  const { strength, intelligence, speed, ...otherInfos } = charactersInfo;
+  characterInfo: CharacterTableWithItemsDto,
+): CharacterFullInfosDto => {
+  const { strength, intelligence, speed, ...otherInfos } = characterInfo;
   return {
     ...otherInfos,
     stats: {

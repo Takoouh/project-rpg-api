@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { IsArray, IsNumber } from 'class-validator';
+import { IsArray, IsBoolean, IsNumber } from 'class-validator';
 import { ItemListDto } from '../Item/item.dto';
 
 export class BattleTableDto {
@@ -25,18 +25,25 @@ export class BattleInitDto {
   monsterId: number;
 }
 
-export class BattleInfoDto {
-  @IsNumber()
-  monsterRemainingLife: number;
-
-  @IsArray()
-  reward: BattleRewardDto[]
-}
 
 class BattleRewardDto {
+  @IsNumber()
+  experience: number;
+
   @IsNumber()
   gold: number;
 
   @IsArray()
   items: ItemListDto[]
+}
+
+export class BattleInfoDto {
+  @IsNumber()
+  monsterRemainingLife: number;
+
+  @IsBoolean()
+  isBattleOver: boolean
+
+  @IsArray()
+  reward: BattleRewardDto
 }
