@@ -31,6 +31,10 @@ export class BattleService {
       throw new Error('this character doesnt exist');
     }
 
+    if (characterInfo.remaining_life_point === 0) {
+      throw new Error('Dead character cant fight');
+    }
+
     const monsterInfo = await this.monsterService.getMonster(monsterId);
 
     //check if player is already in a fight before initiating one
@@ -98,6 +102,28 @@ export class BattleService {
     //if monster is still alive, it retaliate
     const characterLifeAfterRetaliation =
       characterInfo.remaining_life_point - monsterInfo.strengh;
+
+    //If player has 0 or less HP after the attack, player die (not IRL)
+    if (characterLifeAfterRetaliation <= 0) {
+      this.charactersService.updateCharacter(characterId, {
+        remaining_life_point: 0,
+        level: 1,
+        experience: 0,
+        gold: 0,
+      });
+      this.characterItemService.deleteCharacterItems(characterId);
+      this.battleRepository.remove(battleData);
+      return {
+        monsterRemainingLife,
+        isBattleOver: true,
+        reward: {
+          experience: 0,
+          gold: 0,
+          items: [],
+        },
+      };
+    }
+
     this.charactersService.updateCharacter(characterId, {
       remaining_life_point: characterLifeAfterRetaliation,
     });

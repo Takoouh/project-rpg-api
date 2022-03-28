@@ -51,4 +51,13 @@ export class CharacterItemsService {
     });
     return characterItems || [];
   }
+
+  async deleteCharacterItems(
+    characterId: number,
+  ): Promise<CharacterItemsTableDto[]> {
+    const characterItemsToDelete = await this.characterItemsRepository.find({
+      where: { characterId },
+    });
+    return this.characterItemsRepository.remove(characterItemsToDelete);
+  }
 }
