@@ -50,4 +50,16 @@ export class CharactersService {
   findAll(): Promise<CharacterMinimumInfosDto[]> {
     return this.charactersRepository.find();
   }
+
+  async reviveCharacter(characterId: number): Promise<CharacterFullInfosDto> {
+    const characterInfo = await this.findCharacter(characterId);
+    if (characterInfo.remaining_life_point > 0) {
+      throw new Error('Character is not Dead');
+    }
+    await this.charactersRepository.update(
+      { id: characterId },
+      { remaining_life_point: characterInfo.life_point },
+    );
+    return this.findCharacter(characterId);
+  }
 }

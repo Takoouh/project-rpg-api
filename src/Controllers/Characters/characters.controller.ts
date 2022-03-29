@@ -1,4 +1,12 @@
-import { Body, Param, Controller, Get, Post, Delete } from '@nestjs/common';
+import {
+  Body,
+  Param,
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { CharacterItemsService } from 'src/Services/Characters/characterItems.service';
 import {
   CharacterTableDto,
@@ -46,5 +54,12 @@ export class CharactersController {
     @Param() { characterId, itemId }: { characterId: number; itemId: number },
   ): Promise<CharacterFullInfosDto> {
     return this.characterItemsService.addItemToCharacter(characterId, itemId);
+  }
+
+  @Patch('/:characterId/revive')
+  reviveCharacter(
+    @Param() { characterId }: { characterId: number },
+  ): Promise<CharacterFullInfosDto> {
+    return this.charactersService.reviveCharacter(characterId);
   }
 }
