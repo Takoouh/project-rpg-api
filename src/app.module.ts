@@ -6,6 +6,7 @@ import { BattleModule } from './Modules/Battle/battle.module';
 import { CharactersModule } from './Modules/Characters/characters.module';
 import { ItemsModule } from './Modules/Items/items.module';
 import { MonstersModule } from './Modules/Monsters/monsters.module';
+import { PlacesModule } from './Modules/Places/places.module';
 import { SpellsModule } from './Modules/Spells/spells.module';
 
 @Module({
@@ -16,6 +17,7 @@ import { SpellsModule } from './Modules/Spells/spells.module';
     MonstersModule,
     SpellsModule,
     BattleModule,
+    PlacesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

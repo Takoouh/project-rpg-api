@@ -26,8 +26,12 @@ export class CharactersService {
     return this.charactersRepository.remove(characterToDelete);
   }
 
-  async updateCharacter(id: number, newCharacterInfos: CharacterEditInfoDto) {
-    return this.charactersRepository.update({ id }, newCharacterInfos);
+  async updateCharacter(
+    id: number,
+    newCharacterInfos: CharacterEditInfoDto,
+  ): Promise<CharacterFullInfosDto> {
+    await this.charactersRepository.update({ id }, newCharacterInfos);
+    return this.findCharacter(id);
   }
 
   async findCharacter(id: number): Promise<CharacterFullInfosDto> {
