@@ -20,7 +20,7 @@ export class ItemDto {
   price: number;
 
   @IsNumber()
-  strengh: number;
+  strength: number;
 
   @IsNumber()
   speed: number;

@@ -101,7 +101,7 @@ export class BattleService {
 
     //if monster is still alive, it retaliate
     const characterLifeAfterRetaliation =
-      characterInfo.remaining_life_point - monsterInfo.strengh;
+      characterInfo.remaining_life_point - monsterInfo.strength;
 
     //If player has 0 or less HP after the attack, player die (not IRL)
     if (characterLifeAfterRetaliation <= 0) {

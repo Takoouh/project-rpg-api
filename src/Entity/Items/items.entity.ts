@@ -21,7 +21,7 @@ export class ItemsEntity {
   price: number;
 
   @Column({ nullable: false })
-  strengh: number;
+  strength: number;
 
   @Column({ nullable: false })
   speed: number;
