@@ -4,5 +4,8 @@ module.exports = {
   password: process.env.POSTGRES_PASSWORD,
   entities: [process.env.ENTITY_PATH],
   synchronize: true,
-  ssl: { rejectUnauthorized: false },
+  ssl:
+    process.env.NODE_ENV == 'production'
+      ? { rejectUnauthorized: false }
+      : false,
 };
