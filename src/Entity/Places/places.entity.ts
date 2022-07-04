@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CharactersEntity } from '../Characters/characters.entity';
 
 @Entity('places')
 export class PlaceEntity {
@@ -13,4 +14,7 @@ export class PlaceEntity {
 
   @Column({ default: false, nullable: false })
   is_beginning_town: boolean;
+
+  @OneToMany(() => CharactersEntity, (character) => character.place)
+  characters: CharactersEntity[];
 }

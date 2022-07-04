@@ -62,4 +62,11 @@ export class CharactersController {
   ): Promise<CharacterFullInfosDto> {
     return this.charactersService.reviveCharacter(characterId);
   }
+
+  @Patch('/:characterId/rest-in-inn')
+  restInInn(
+    @Param() { characterId }: { characterId: number },
+  ): Promise<CharacterFullInfosDto> {
+    return this.charactersService.restInInn(characterId);
+  }
 }

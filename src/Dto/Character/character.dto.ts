@@ -1,5 +1,6 @@
 import { IsArray, IsNumber, IsObject, IsString } from 'class-validator';
 import { ItemListDto } from '../Item/item.dto';
+import { PlaceTableDto } from '../Place/Place.dto';
 
 export class CharacterTableDto {
   @IsNumber()
@@ -31,6 +32,9 @@ export class CharacterTableDto {
 
   @IsNumber()
   intelligence: number;
+
+  @IsObject()
+  place: PlaceTableDto;
 }
 
 export class CharacterTableWithItemsDto extends CharacterTableDto {
@@ -105,6 +109,9 @@ export class CharacterFullInfosDto {
 
   @IsArray()
   items: ItemListDto[];
+
+  @IsObject()
+  place: PlaceTableDto;
 }
 
 export class CharacterMinimumInfosDto {

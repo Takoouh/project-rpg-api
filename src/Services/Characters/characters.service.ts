@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CharacterTableDto,
@@ -9,12 +9,15 @@ import {
 import { CharactersEntity } from '../../Entity/Characters/characters.entity';
 import { formatCharactersInfos } from '../../Helpers/CharactersHelper/charactersHelpers';
 import { Repository } from 'typeorm';
+import { PlacesService } from '../Places/places.service';
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(CharactersEntity)
     private charactersRepository: Repository<CharactersEntity>,
+    @Inject(forwardRef(() => PlacesService))
+    private readonly placesService: PlacesService,
   ) {}
 
   create(character: CharacterTableDto): Promise<CharacterTableDto> {
@@ -35,9 +38,9 @@ export class CharactersService {
   }
 
   async findCharacter(id: number): Promise<CharacterFullInfosDto> {
-    const characterInfo = await this.charactersRepository.findOne({
+    let characterInfo = await this.charactersRepository.findOne({
       where: { id },
-      relations: ['items'],
+      relations: ['items', 'place'],
     });
     if (!characterInfo) {
       throw new HttpException(
@@ -47,6 +50,15 @@ export class CharactersService {
         },
         500,
       );
+    }
+    if (!characterInfo.place) {
+      // set player to beginner town if player is nowhere
+      const beginningTown = await this.placesService.getBeginningTown();
+      await this.charactersRepository.update({ id }, { place: beginningTown });
+      characterInfo = await this.charactersRepository.findOne({
+        where: { id },
+        relations: ['items', 'place'],
+      });
     }
     return formatCharactersInfos(characterInfo);
   }
@@ -65,5 +77,21 @@ export class CharactersService {
       { remaining_life_point: characterInfo.life_point },
     );
     return this.findCharacter(characterId);
+  }
+
+  async restInInn(charactedId: number): Promise<any> {
+    const characterInfo = await this.findCharacter(charactedId);
+    //we check if village where player is has an Inn
+    if (characterInfo.place.has_inn) {
+      if (characterInfo.gold < 15) {
+        throw new Error('Character doesnt have enough gold to rest in Inn');
+      }
+      return this.updateCharacter(charactedId, {
+        gold: characterInfo.gold - 15,
+        remaining_life_point: characterInfo.life_point,
+      });
+    } else {
+      throw new Error('There is no inn in proximity');
+    }
   }
 }

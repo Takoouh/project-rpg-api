@@ -1,3 +1,4 @@
+import { forwardRef, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BattleInfoDto, BattleTableDto } from 'src/Dto/Battle/battle.dto';
 import { BattleEntity } from 'src/Entity/Battle/battle.entity';
@@ -11,8 +12,11 @@ export class BattleService {
   constructor(
     @InjectRepository(BattleEntity)
     private battleRepository: Repository<BattleEntity>,
+    @Inject(forwardRef(() => CharactersService))
     private charactersService: CharactersService,
+    @Inject(forwardRef(() => MonstersService))
     private monsterService: MonstersService,
+    @Inject(forwardRef(() => CharacterItemsService))
     private characterItemService: CharacterItemsService,
   ) {}
 

@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PlaceEntity } from '../Places/places.entity';
 import { CharacterItemsEntity } from './characterItems.entity';
 
 @Entity('characters')
@@ -38,4 +45,7 @@ export class CharactersEntity {
     (characterItem) => characterItem.character,
   )
   items: CharacterItemsEntity[];
+
+  @ManyToOne(() => PlaceEntity, (place) => place.characters)
+  place: PlaceEntity;
 }

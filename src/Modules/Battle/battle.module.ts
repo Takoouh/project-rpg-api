@@ -1,30 +1,18 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BattleController } from 'src/Controllers/Battle/battle.controller';
 import { BattleEntity } from 'src/Entity/Battle/battle.entity';
-import { CharacterItemsEntity } from 'src/Entity/Characters/characterItems.entity';
-import { CharactersEntity } from 'src/Entity/Characters/characters.entity';
-import { MonsterEntity } from 'src/Entity/Monsters/monsters.entity';
 import { BattleService } from 'src/Services/Battle/battle.service';
-import { CharacterItemsService } from 'src/Services/Characters/characterItems.service';
-import { CharactersService } from 'src/Services/Characters/characters.service';
-import { MonstersService } from 'src/Services/Monsters/monsters.service';
+import { CharactersModule } from '../Characters/characters.module';
+import { MonstersModule } from '../Monsters/monsters.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      BattleEntity,
-      CharactersEntity,
-      MonsterEntity,
-      CharacterItemsEntity,
-    ]),
+    TypeOrmModule.forFeature([BattleEntity]),
+    forwardRef(() => CharactersModule),
+    forwardRef(() => MonstersModule),
   ],
   controllers: [BattleController],
-  providers: [
-    BattleService,
-    CharactersService,
-    MonstersService,
-    CharacterItemsService,
-  ],
+  providers: [BattleService],
 })
 export class BattleModule {}
