@@ -15,7 +15,7 @@ export class CharactersService {
   constructor(
     @InjectRepository(CharactersEntity)
     private charactersRepository: Repository<CharactersEntity>,
-  ) { }
+  ) {}
 
   create(character: CharacterTableDto): Promise<CharacterTableDto> {
     return this.charactersRepository.save(character);

@@ -9,4 +9,4 @@ import { SpellsService } from '../../Services/Spells/spells/spells.service';
   controllers: [SpellsController],
   providers: [SpellsService],
 })
-export class SpellsModule { }
+export class SpellsModule {}

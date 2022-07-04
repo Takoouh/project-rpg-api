@@ -14,7 +14,7 @@ export class BattleService {
     private charactersService: CharactersService,
     private monsterService: MonstersService,
     private characterItemService: CharacterItemsService,
-  ) { }
+  ) {}
 
   async initBattle({
     characterId,

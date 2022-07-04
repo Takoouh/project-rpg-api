@@ -12,7 +12,7 @@ import { ItemsService } from '../../Services/Items/items.service';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private itemsService: ItemsService) { }
+  constructor(private itemsService: ItemsService) {}
 
   @Post('/')
   addItem(@Body() item: ItemDto): Promise<ItemDto> {

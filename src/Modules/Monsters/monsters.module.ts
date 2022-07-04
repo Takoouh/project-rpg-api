@@ -9,4 +9,4 @@ import { MonstersService } from '../../Services/Monsters/monsters.service';
   controllers: [MonstersController],
   providers: [MonstersService],
 })
-export class MonstersModule { }
+export class MonstersModule {}

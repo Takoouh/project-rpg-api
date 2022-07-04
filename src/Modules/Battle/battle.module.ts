@@ -27,4 +27,4 @@ import { MonstersService } from 'src/Services/Monsters/monsters.service';
     CharacterItemsService,
   ],
 })
-export class BattleModule { }
+export class BattleModule {}

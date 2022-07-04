@@ -12,10 +12,14 @@ export class PlacesService {
     @InjectRepository(PlaceEntity)
     private placesRepository: Repository<PlaceEntity>,
     private charactersServices: CharactersService,
-  ) { }
+  ) {}
 
   getAllPlaces(): Promise<PlaceTableDto[]> {
     return this.placesRepository.find();
+  }
+
+  addPlace(place: PlaceTableDto): Promise<PlaceTableDto> {
+    return this.placesRepository.save(place);
   }
 
   async restInInn(
@@ -25,7 +29,7 @@ export class PlacesService {
     const placeInfo = await this.placesRepository.findOne({ id: placeId });
 
     //we check if village where player is has an Inn
-    if (placeInfo.hasInn) {
+    if (placeInfo.has_inn) {
       const characterInfo = await this.charactersServices.findCharacter(
         charactedId,
       );

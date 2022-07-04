@@ -9,5 +9,8 @@ export class PlaceEntity {
   place_name: string;
 
   @Column()
-  hasInn: boolean;
+  has_inn: boolean;
+
+  @Column({ default: false, nullable: false })
+  is_beginning_town: boolean;
 }

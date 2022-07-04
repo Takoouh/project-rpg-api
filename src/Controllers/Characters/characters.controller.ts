@@ -20,7 +20,7 @@ export class CharactersController {
   constructor(
     private charactersService: CharactersService,
     private characterItemsService: CharacterItemsService,
-  ) { }
+  ) {}
 
   @Post('/')
   create(@Body() character: CharacterTableDto): Promise<CharacterTableDto> {

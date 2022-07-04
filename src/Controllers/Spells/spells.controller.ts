@@ -12,7 +12,7 @@ import { SpellsService } from '../../Services/Spells/spells/spells.service';
 
 @Controller('spells')
 export class SpellsController {
-  constructor(private spellsService: SpellsService) { }
+  constructor(private spellsService: SpellsService) {}
 
   @Post('/')
   addSpell(@Body() spell: SpellDto): Promise<SpellDto> {

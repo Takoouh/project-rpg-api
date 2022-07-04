@@ -9,7 +9,7 @@ export class SpellsService {
   constructor(
     @InjectRepository(SpellEntity)
     private spellsRepository: Repository<SpellEntity>,
-  ) { }
+  ) {}
 
   addSpell(spell: SpellDto): Promise<SpellDto> {
     return this.spellsRepository.save(spell);

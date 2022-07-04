@@ -8,5 +8,8 @@ export class PlaceTableDto {
   place_name: string;
 
   @IsBoolean()
-  hasInn: boolean;
+  has_inn: boolean;
+
+  @IsBoolean()
+  is_beginning_town: boolean;
 }

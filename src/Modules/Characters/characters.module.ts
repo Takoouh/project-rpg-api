@@ -11,4 +11,4 @@ import { CharactersService } from '../../Services/Characters/characters.service'
   controllers: [CharactersController],
   providers: [CharactersService, CharacterItemsService],
 })
-export class CharactersModule { }
+export class CharactersModule {}
