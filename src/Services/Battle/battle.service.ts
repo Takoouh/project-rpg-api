@@ -88,7 +88,10 @@ export class BattleService {
         experience: characterInfo.experience + monsterInfo.experience,
       };
       this.battleRepository.remove(battleData);
-      this.charactersService.updateCharacter(characterId, playerWithReward);
+      await this.charactersService.updateCharacter(
+        characterId,
+        playerWithReward,
+      );
       acquiredLoot.map((item) =>
         this.characterItemService.addItemToCharacter(characterId, item.id),
       );
