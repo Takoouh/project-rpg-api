@@ -1,5 +1,7 @@
 import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import {
   CharacterTableDto,
   CharacterFullInfosDto,
@@ -8,8 +10,9 @@ import {
 } from '../../Dto/Character/character.dto';
 import { CharactersEntity } from '../../Entity/Characters/characters.entity';
 import { formatCharactersInfos } from '../../Helpers/CharactersHelper/charactersHelpers';
-import { Repository } from 'typeorm';
+
 import { PlacesService } from '../Places/places.service';
+import * as LEVELING_GRID from '../../Data/leveling_grid.json';
 
 @Injectable()
 export class CharactersService {
@@ -20,7 +23,10 @@ export class CharactersService {
     private readonly placesService: PlacesService,
   ) {}
 
-  create(character: CharacterTableDto): Promise<CharacterTableDto> {
+  createCharacter(character: CharacterTableDto): Promise<CharacterTableDto> {
+    const firstLevelInfo = LEVELING_GRID.find(({ level }) => level === 1);
+    character.life_point = firstLevelInfo.life_point;
+    character.exp_to_level_up = firstLevelInfo.exp_to_level_up;
     return this.charactersRepository.save(character);
   }
 
@@ -34,7 +40,44 @@ export class CharactersService {
     newCharacterInfos: CharacterEditInfoDto,
   ): Promise<CharacterFullInfosDto> {
     await this.charactersRepository.update({ id }, newCharacterInfos);
-    return this.findCharacter(id);
+    let updatedCharacter = await this.findCharacter(id);
+    // we check if character has leveled up and if level is not maxed
+    if (
+      updatedCharacter.experience >= updatedCharacter.exp_to_level_up &&
+      updatedCharacter.level < 20
+    ) {
+      let characterWithLevelUpInfos: CharacterEditInfoDto = {
+        level: updatedCharacter.level,
+        experience: updatedCharacter.experience,
+        exp_to_level_up: updatedCharacter.exp_to_level_up,
+        skill_point: updatedCharacter.skill_point,
+      };
+
+      //While character can level up, we resolve those before updating
+      while (
+        characterWithLevelUpInfos.experience >=
+        characterWithLevelUpInfos.exp_to_level_up
+      ) {
+        const leveledUpInfos = LEVELING_GRID.find(
+          ({ level }) => level === characterWithLevelUpInfos.level + 1,
+        );
+
+        characterWithLevelUpInfos = {
+          experience:
+            characterWithLevelUpInfos.experience -
+            characterWithLevelUpInfos.exp_to_level_up,
+          life_point: leveledUpInfos.life_point,
+          level: leveledUpInfos.level,
+          exp_to_level_up: leveledUpInfos.exp_to_level_up,
+          skill_point: characterWithLevelUpInfos.skill_point + 2,
+        };
+      }
+
+      await this.charactersRepository.update({ id }, characterWithLevelUpInfos);
+      updatedCharacter = await this.findCharacter(id);
+    }
+
+    return updatedCharacter;
   }
 
   async findCharacter(id: number): Promise<CharacterFullInfosDto> {

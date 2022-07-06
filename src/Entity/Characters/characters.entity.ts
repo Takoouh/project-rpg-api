@@ -22,6 +22,12 @@ export class CharactersEntity {
   @Column({ default: 0, nullable: false })
   experience: number;
 
+  @Column({ default: 0, nullable: false })
+  exp_to_level_up: number;
+
+  @Column({ default: 0, nullable: false })
+  skill_point: number;
+
   @Column({ default: 10, nullable: false })
   remaining_life_point: number;
 

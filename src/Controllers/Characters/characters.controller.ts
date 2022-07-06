@@ -24,7 +24,7 @@ export class CharactersController {
 
   @Post('/')
   create(@Body() character: CharacterTableDto): Promise<CharacterTableDto> {
-    return this.charactersService.create(character);
+    return this.charactersService.createCharacter(character);
   }
 
   @Delete('/:id')

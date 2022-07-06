@@ -16,7 +16,13 @@ export class CharacterTableDto {
   experience: number;
 
   @IsNumber()
+  exp_to_level_up: number;
+
+  @IsNumber()
   remaining_life_point: number;
+
+  @IsNumber()
+  skill_point: number;
 
   @IsNumber()
   life_point: number;
@@ -51,6 +57,12 @@ export class CharacterEditInfoDto {
 
   @IsNumber()
   experience?: number;
+
+  @IsNumber()
+  exp_to_level_up?: number;
+
+  @IsNumber()
+  skill_point?: number;
 
   @IsNumber()
   remaining_life_point?: number;
@@ -96,7 +108,13 @@ export class CharacterFullInfosDto {
   experience: number;
 
   @IsNumber()
+  exp_to_level_up: number;
+
+  @IsNumber()
   remaining_life_point: number;
+
+  @IsNumber()
+  skill_point: number;
 
   @IsNumber()
   gold: number;
