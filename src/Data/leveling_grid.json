@@ -2,101 +2,101 @@
     {
         "level": 1,
         "exp_to_level_up": 8,
-        "life_point": 10
+        "life_points": 10
     },
     {
         "level": 2,
         "exp_to_level_up": 13,
-        "life_point": 15
+        "life_points": 15
     },
     {
         "level": 3,
         "exp_to_level_up": 21,
-        "life_point": 20
+        "life_points": 20
     },
     {
         "level": 4,
         "exp_to_level_up": 34,
-        "life_point": 25
+        "life_points": 25
     },
     {
         "level": 5,
         "exp_to_level_up": 55,
-        "life_point": 30
+        "life_points": 30
     },
     {
         "level": 6,
         "exp_to_level_up": 89,
-        "life_point": 35
+        "life_points": 35
     },
     {
         "level": 7,
         "exp_to_level_up": 144,
-        "life_point": 40
+        "life_points": 40
     },
     {
         "level": 8,
         "exp_to_level_up": 233,
-        "life_point": 45
+        "life_points": 45
     },
     {
         "level": 9,
         "exp_to_level_up": 377,
-        "life_point": 50
+        "life_points": 50
     },
     {
         "level": 10,
         "exp_to_level_up": 610,
-        "life_point": 55
+        "life_points": 55
     },
     {
         "level": 11,
         "exp_to_level_up": 987,
-        "life_point": 60
+        "life_points": 60
     },
     {
         "level": 12,
         "exp_to_level_up": 1597,
-        "life_point": 65
+        "life_points": 65
     },
     {
         "level": 13,
         "exp_to_level_up": 2584,
-        "life_point": 70
+        "life_points": 70
     },
     {
         "level": 14,
         "exp_to_level_up": 4181,
-        "life_point": 75
+        "life_points": 75
     },
     {
         "level": 15,
         "exp_to_level_up": 6765,
-        "life_point": 80
+        "life_points": 80
     },
     {
         "level": 16,
         "exp_to_level_up": 10946,
-        "life_point": 85
+        "life_points": 85
     },
     {
         "level": 17,
         "exp_to_level_up": 17711,
-        "life_point": 90
+        "life_points": 90
     },
     {
         "level": 18,
         "exp_to_level_up": 28657,
-        "life_point": 95
+        "life_points": 95
     },
     {
         "level": 19,
         "exp_to_level_up": 46368,
-        "life_point": 100
+        "life_points": 100
     },
     {
         "level": 20,
         "exp_to_level_up": 75025,
-        "life_point": 105
+        "life_points": 105
     }
 ]

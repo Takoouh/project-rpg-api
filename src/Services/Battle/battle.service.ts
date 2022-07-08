@@ -35,7 +35,7 @@ export class BattleService {
       throw new Error('this character doesnt exist');
     }
 
-    if (characterInfo.remaining_life_point === 0) {
+    if (characterInfo.remaining_life_points === 0) {
       throw new Error('Dead character cant fight');
     }
 
@@ -52,7 +52,7 @@ export class BattleService {
     const battleData = {
       characterId,
       monsterId,
-      monsterRemainingLife: monsterInfo.life_point,
+      monsterRemainingLife: monsterInfo.life_points,
     };
     return this.battleRepository.save(battleData);
   }
@@ -108,12 +108,12 @@ export class BattleService {
 
     //if monster is still alive, it retaliate
     const characterLifeAfterRetaliation =
-      characterInfo.remaining_life_point - monsterInfo.strength;
+      characterInfo.remaining_life_points - monsterInfo.strength;
 
     //If player has 0 or less HP after the attack, player die (not IRL)
     if (characterLifeAfterRetaliation <= 0) {
       this.charactersService.updateCharacter(characterId, {
-        remaining_life_point: 0,
+        remaining_life_points: 0,
         level: 1,
         experience: 0,
         gold: 0,
@@ -132,7 +132,7 @@ export class BattleService {
     }
 
     this.charactersService.updateCharacter(characterId, {
-      remaining_life_point: characterLifeAfterRetaliation,
+      remaining_life_points: characterLifeAfterRetaliation,
     });
     this.battleRepository.update(
       { id: battleId },

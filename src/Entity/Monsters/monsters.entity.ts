@@ -9,7 +9,7 @@ export class MonsterEntity {
   monster_name: string;
 
   @Column({ nullable: false })
-  life_point: number;
+  life_points: number;
 
   @Column({ nullable: false })
   strength: number;

@@ -69,4 +69,12 @@ export class CharactersController {
   ): Promise<CharacterFullInfosDto> {
     return this.charactersService.restInInn(characterId);
   }
+
+  @Patch('/:characterId/attribute-skill-point/:stat')
+  attributeSkillPoint(
+    @Param()
+    { characterId, stat }: { characterId: number; stat: string },
+  ): Promise<CharacterFullInfosDto> {
+    return this.charactersService.attributeSkillPoint(characterId, stat);
+  }
 }

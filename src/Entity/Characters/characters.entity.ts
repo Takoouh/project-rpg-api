@@ -26,13 +26,13 @@ export class CharactersEntity {
   exp_to_level_up: number;
 
   @Column({ default: 0, nullable: false })
-  skill_point: number;
+  skill_points: number;
 
   @Column({ default: 10, nullable: false })
-  remaining_life_point: number;
+  remaining_life_points: number;
 
   @Column({ default: 10, nullable: false })
-  life_point: number;
+  life_points: number;
 
   @Column({ default: 0, nullable: false })
   gold: number;
