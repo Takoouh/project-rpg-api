@@ -8,6 +8,8 @@ import { CharacterItemsService } from '../Characters/characterItems.service';
 import { CharactersService } from '../Characters/characters.service';
 import { MonstersService } from '../Monsters/monsters.service';
 
+import * as LEVELING_GRID from '../../Data/leveling_grid.json';
+
 export class BattleService {
   constructor(
     @InjectRepository(BattleEntity)
@@ -112,11 +114,18 @@ export class BattleService {
 
     //If player has 0 or less HP after the attack, player die (not IRL)
     if (characterLifeAfterRetaliation <= 0) {
+      const firstLevelInfos = LEVELING_GRID.find(({ level }) => level === 1);
       this.charactersService.updateCharacter(characterId, {
         remaining_life_points: 0,
+        life_points: firstLevelInfos.life_points,
+        exp_to_level_up: firstLevelInfos.exp_to_level_up,
         level: 1,
         experience: 0,
         gold: 0,
+        skill_points: 0,
+        strength: 5,
+        speed: 5,
+        intelligence: 5,
       });
       this.characterItemService.deleteCharacterItems(characterId);
       this.battleRepository.remove(battleData);
