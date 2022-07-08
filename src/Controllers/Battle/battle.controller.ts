@@ -8,7 +8,7 @@ import { BattleService } from 'src/Services/Battle/battle.service';
 
 @Controller('battle')
 export class BattleController {
-  constructor(private battleService: BattleService) { }
+  constructor(private battleService: BattleService) {}
 
   @Post('/:characterId/:monsterId')
   initBattle(

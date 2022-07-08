@@ -9,7 +9,7 @@ export class MonstersService {
   constructor(
     @InjectRepository(MonsterEntity)
     private monstersRepository: Repository<MonsterEntity>,
-  ) { }
+  ) {}
 
   addMonster(item: MonsterTableDto): Promise<MonsterTableDto> {
     return this.monstersRepository.save(item);

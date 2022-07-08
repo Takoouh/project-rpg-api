@@ -1,5 +1,6 @@
 import { IsArray, IsNumber, IsObject, IsString } from 'class-validator';
 import { ItemListDto } from '../Item/item.dto';
+import { PlaceTableDto } from '../Place/Place.dto';
 
 export class CharacterTableDto {
   @IsNumber()
@@ -15,10 +16,16 @@ export class CharacterTableDto {
   experience: number;
 
   @IsNumber()
-  remaining_life_point: number;
+  exp_to_level_up: number;
 
   @IsNumber()
-  life_point: number;
+  remaining_life_points: number;
+
+  @IsNumber()
+  skill_points: number;
+
+  @IsNumber()
+  life_points: number;
 
   @IsNumber()
   gold: number;
@@ -31,6 +38,9 @@ export class CharacterTableDto {
 
   @IsNumber()
   intelligence: number;
+
+  @IsObject()
+  place: PlaceTableDto;
 }
 
 export class CharacterTableWithItemsDto extends CharacterTableDto {
@@ -49,10 +59,16 @@ export class CharacterEditInfoDto {
   experience?: number;
 
   @IsNumber()
-  remaining_life_point?: number;
+  exp_to_level_up?: number;
 
   @IsNumber()
-  life_point?: number;
+  skill_points?: number;
+
+  @IsNumber()
+  remaining_life_points?: number;
+
+  @IsNumber()
+  life_points?: number;
 
   @IsNumber()
   gold?: number;
@@ -92,19 +108,28 @@ export class CharacterFullInfosDto {
   experience: number;
 
   @IsNumber()
-  remaining_life_point: number;
+  exp_to_level_up: number;
+
+  @IsNumber()
+  remaining_life_points: number;
+
+  @IsNumber()
+  skill_points: number;
 
   @IsNumber()
   gold: number;
 
   @IsNumber()
-  life_point: number;
+  life_points: number;
 
   @IsObject()
   stats: StatsDTO;
 
   @IsArray()
   items: ItemListDto[];
+
+  @IsObject()
+  place: PlaceTableDto;
 }
 
 export class CharacterMinimumInfosDto {

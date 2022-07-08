@@ -1,3 +1,4 @@
+import { forwardRef, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BattleInfoDto, BattleTableDto } from 'src/Dto/Battle/battle.dto';
 import { BattleEntity } from 'src/Entity/Battle/battle.entity';
@@ -7,14 +8,19 @@ import { CharacterItemsService } from '../Characters/characterItems.service';
 import { CharactersService } from '../Characters/characters.service';
 import { MonstersService } from '../Monsters/monsters.service';
 
+import * as LEVELING_GRID from '../../Data/leveling_grid.json';
+
 export class BattleService {
   constructor(
     @InjectRepository(BattleEntity)
     private battleRepository: Repository<BattleEntity>,
+    @Inject(forwardRef(() => CharactersService))
     private charactersService: CharactersService,
+    @Inject(forwardRef(() => MonstersService))
     private monsterService: MonstersService,
+    @Inject(forwardRef(() => CharacterItemsService))
     private characterItemService: CharacterItemsService,
-  ) { }
+  ) {}
 
   async initBattle({
     characterId,
@@ -31,7 +37,7 @@ export class BattleService {
       throw new Error('this character doesnt exist');
     }
 
-    if (characterInfo.remaining_life_point === 0) {
+    if (characterInfo.remaining_life_points === 0) {
       throw new Error('Dead character cant fight');
     }
 
@@ -48,7 +54,7 @@ export class BattleService {
     const battleData = {
       characterId,
       monsterId,
-      monsterRemainingLife: monsterInfo.life_point,
+      monsterRemainingLife: monsterInfo.life_points,
     };
     return this.battleRepository.save(battleData);
   }
@@ -84,7 +90,10 @@ export class BattleService {
         experience: characterInfo.experience + monsterInfo.experience,
       };
       this.battleRepository.remove(battleData);
-      this.charactersService.updateCharacter(characterId, playerWithReward);
+      await this.charactersService.updateCharacter(
+        characterId,
+        playerWithReward,
+      );
       acquiredLoot.map((item) =>
         this.characterItemService.addItemToCharacter(characterId, item.id),
       );
@@ -101,15 +110,22 @@ export class BattleService {
 
     //if monster is still alive, it retaliate
     const characterLifeAfterRetaliation =
-      characterInfo.remaining_life_point - monsterInfo.strength;
+      characterInfo.remaining_life_points - monsterInfo.strength;
 
     //If player has 0 or less HP after the attack, player die (not IRL)
     if (characterLifeAfterRetaliation <= 0) {
+      const firstLevelInfos = LEVELING_GRID.find(({ level }) => level === 1);
       this.charactersService.updateCharacter(characterId, {
-        remaining_life_point: 0,
+        remaining_life_points: 0,
+        life_points: firstLevelInfos.life_points,
+        exp_to_level_up: firstLevelInfos.exp_to_level_up,
         level: 1,
         experience: 0,
         gold: 0,
+        skill_points: 0,
+        strength: 5,
+        speed: 5,
+        intelligence: 5,
       });
       this.characterItemService.deleteCharacterItems(characterId);
       this.battleRepository.remove(battleData);
@@ -125,7 +141,7 @@ export class BattleService {
     }
 
     this.charactersService.updateCharacter(characterId, {
-      remaining_life_point: characterLifeAfterRetaliation,
+      remaining_life_points: characterLifeAfterRetaliation,
     });
     this.battleRepository.update(
       { id: battleId },

@@ -22,4 +22,4 @@ import { SpellsModule } from './Modules/Spells/spells.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

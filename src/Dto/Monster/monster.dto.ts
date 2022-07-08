@@ -9,7 +9,7 @@ export class MonsterTableDto {
   monster_name: string;
 
   @IsString()
-  life_point: number;
+  life_points: number;
 
   @IsNumber()
   strength: number;
@@ -29,7 +29,7 @@ export class MonsterInfoDto {
   monster_name: string;
 
   @IsString()
-  life_point: number;
+  life_points: number;
 
   @IsNumber()
   strength: number;

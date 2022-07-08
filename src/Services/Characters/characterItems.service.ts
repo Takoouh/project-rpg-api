@@ -13,7 +13,7 @@ export class CharacterItemsService {
     @InjectRepository(CharacterItemsEntity)
     private characterItemsRepository: Repository<CharacterItemsEntity>,
     private charactersService: CharactersService,
-  ) { }
+  ) {}
 
   async addItemToCharacter(
     characterId: number,

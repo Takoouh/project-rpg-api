@@ -12,7 +12,7 @@ import { MonstersService } from '../../Services/Monsters/monsters.service';
 
 @Controller('monsters')
 export class MonstersController {
-  constructor(private monstersService: MonstersService) { }
+  constructor(private monstersService: MonstersService) {}
 
   @Post('/')
   addMonster(@Body() monster: MonsterTableDto): Promise<MonsterTableDto> {

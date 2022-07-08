@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PlaceEntity } from '../Places/places.entity';
 import { CharacterItemsEntity } from './characterItems.entity';
 
 @Entity('characters')
@@ -15,11 +22,17 @@ export class CharactersEntity {
   @Column({ default: 0, nullable: false })
   experience: number;
 
-  @Column({ default: 10, nullable: false })
-  remaining_life_point: number;
+  @Column({ default: 0, nullable: false })
+  exp_to_level_up: number;
+
+  @Column({ default: 0, nullable: false })
+  skill_points: number;
 
   @Column({ default: 10, nullable: false })
-  life_point: number;
+  remaining_life_points: number;
+
+  @Column({ default: 10, nullable: false })
+  life_points: number;
 
   @Column({ default: 0, nullable: false })
   gold: number;
@@ -38,4 +51,7 @@ export class CharactersEntity {
     (characterItem) => characterItem.character,
   )
   items: CharacterItemsEntity[];
+
+  @ManyToOne(() => PlaceEntity, (place) => place.characters)
+  place: PlaceEntity;
 }

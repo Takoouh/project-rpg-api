@@ -20,11 +20,11 @@ export class CharactersController {
   constructor(
     private charactersService: CharactersService,
     private characterItemsService: CharacterItemsService,
-  ) { }
+  ) {}
 
   @Post('/')
   create(@Body() character: CharacterTableDto): Promise<CharacterTableDto> {
-    return this.charactersService.create(character);
+    return this.charactersService.createCharacter(character);
   }
 
   @Delete('/:id')
@@ -61,5 +61,20 @@ export class CharactersController {
     @Param() { characterId }: { characterId: number },
   ): Promise<CharacterFullInfosDto> {
     return this.charactersService.reviveCharacter(characterId);
+  }
+
+  @Patch('/:characterId/rest-in-inn')
+  restInInn(
+    @Param() { characterId }: { characterId: number },
+  ): Promise<CharacterFullInfosDto> {
+    return this.charactersService.restInInn(characterId);
+  }
+
+  @Patch('/:characterId/attribute-skill-point/:stat')
+  attributeSkillPoint(
+    @Param()
+    { characterId, stat }: { characterId: number; stat: string },
+  ): Promise<CharacterFullInfosDto> {
+    return this.charactersService.attributeSkillPoint(characterId, stat);
   }
 }
