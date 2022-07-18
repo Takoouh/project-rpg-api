@@ -3,16 +3,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MonsterInfoDto, MonsterTableDto } from 'src/Dto/Monster/monster.dto';
 import { MonsterEntity } from 'src/Entity/Monsters/monsters.entity';
 import { Repository } from 'typeorm';
+import { MonsterItemsService } from './monsterItems.service';
 
 @Injectable()
 export class MonstersService {
   constructor(
     @InjectRepository(MonsterEntity)
     private monstersRepository: Repository<MonsterEntity>,
+    private monsterItemsService: MonsterItemsService,
   ) {}
 
-  addMonster(item: MonsterTableDto): Promise<MonsterTableDto> {
-    return this.monstersRepository.save(item);
+  async addMonster(monster: MonsterInfoDto): Promise<MonsterInfoDto> {
+    const { potentialItemDrop, ...monsterInfos } = monster;
+    const monsterToAdd = await this.monstersRepository.save(monsterInfos);
+    if (potentialItemDrop?.length > 0) {
+      await potentialItemDrop.map(async ({ item, dropRate }) => {
+        await this.monsterItemsService.saveItem(
+          monsterToAdd.id,
+          item.id,
+          dropRate,
+        );
+      });
+    }
+    return await this.monstersRepository.findOne({
+      where: { id: monsterToAdd.id },
+      relations: ['potentialItemDrop'],
+    });
   }
 
   async deleteMonster(id: number): Promise<MonsterTableDto> {
@@ -23,8 +39,22 @@ export class MonstersService {
   async updateMonster(id: number, newMonstersInfos: any) {
     const monsterId = id;
     await this.monstersRepository.update({ id: monsterId }, newMonstersInfos);
+    return this.monstersRepository.findOne({
+      where: { monsterId },
+      relations: ['potentialItemDrop'],
+    });
+  }
 
-    return this.monstersRepository.findOne(monsterId);
+  async addItemToMonster(
+    monsterId: number,
+    itemId: number,
+    dropRate: number,
+  ): Promise<MonsterInfoDto> {
+    await this.monsterItemsService.saveItem(monsterId, itemId, dropRate);
+    return this.monstersRepository.findOne({
+      where: { id: monsterId },
+      relations: ['potentialItemDrop'],
+    });
   }
 
   async getMonster(id: number): Promise<MonsterInfoDto> {

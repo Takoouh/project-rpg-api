@@ -15,7 +15,7 @@ export class MonstersController {
   constructor(private monstersService: MonstersService) {}
 
   @Post('/')
-  addMonster(@Body() monster: MonsterTableDto): Promise<MonsterTableDto> {
+  addMonster(@Body() monster: MonsterInfoDto): Promise<MonsterInfoDto> {
     return this.monstersService.addMonster(monster);
   }
 
@@ -30,6 +30,19 @@ export class MonstersController {
     @Body() monster: MonsterInfoDto,
   ): Promise<MonsterTableDto> {
     return this.monstersService.updateMonster(id, monster);
+  }
+
+  @Post('/:monsterId/add-item/:itemId/:dropRate')
+  addItemToMonster(
+    @Param('itemId') itemId: string,
+    @Param('monsterId') monsterId: string,
+    @Param('dropRate') dropRate: string,
+  ): Promise<MonsterInfoDto> {
+    return this.monstersService.addItemToMonster(
+      parseInt(monsterId),
+      parseInt(itemId),
+      parseInt(dropRate),
+    );
   }
 
   @Get('/:id')

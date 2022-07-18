@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CharacterFullInfosDto } from 'src/Dto/Character/character.dto';
 import { CharacterItemsTableDto } from 'src/Dto/Character/characterItem.dto';
 import { CharacterItemsEntity } from 'src/Entity/Characters/characterItems.entity';
-import { CharactersEntity } from 'src/Entity/Characters/characters.entity';
 import { Repository } from 'typeorm';
 import { CharactersService } from './characters.service';
 

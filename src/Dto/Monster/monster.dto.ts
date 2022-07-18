@@ -48,7 +48,7 @@ export class MonsterInfoDto {
 }
 
 export class MonsterItemDto {
-  @IsNumber()
+  @IsObject()
   item: ItemDto;
 
   @IsNumber()
