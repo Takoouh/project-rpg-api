@@ -44,7 +44,7 @@ export class MonsterInfoDto {
   experience: number;
 
   @IsObject()
-  potentialItemDrop: MonsterItemDto[];
+  potential_item_drop: MonsterItemDto[];
 }
 
 export class MonsterItemDto {
@@ -52,5 +52,5 @@ export class MonsterItemDto {
   item: ItemDto;
 
   @IsNumber()
-  dropRate: number;
+  drop_rate: number;
 }

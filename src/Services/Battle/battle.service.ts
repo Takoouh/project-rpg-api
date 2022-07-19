@@ -84,7 +84,9 @@ export class BattleService {
 
     //if monster has been killed, we attribute reward
     if (isMonsterKo) {
-      const acquiredLoot = attributeMonsterLoot(monsterInfo.potentialItemDrop);
+      const acquiredLoot = attributeMonsterLoot(
+        monsterInfo.potential_item_drop,
+      );
       const playerWithReward = {
         gold: characterInfo.gold + monsterInfo.gold,
         experience: characterInfo.experience + monsterInfo.experience,

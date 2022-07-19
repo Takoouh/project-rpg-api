@@ -14,20 +14,20 @@ export class MonstersService {
   ) {}
 
   async addMonster(monster: MonsterInfoDto): Promise<MonsterInfoDto> {
-    const { potentialItemDrop, ...monsterInfos } = monster;
+    const { potential_item_drop, ...monsterInfos } = monster;
     const monsterToAdd = await this.monstersRepository.save(monsterInfos);
-    if (potentialItemDrop?.length > 0) {
-      await potentialItemDrop.map(async ({ item, dropRate }) => {
+    if (potential_item_drop?.length > 0) {
+      await potential_item_drop.map(async ({ item, drop_rate }) => {
         await this.monsterItemsService.saveItem(
           monsterToAdd.id,
           item.id,
-          dropRate,
+          drop_rate,
         );
       });
     }
     return await this.monstersRepository.findOne({
       where: { id: monsterToAdd.id },
-      relations: ['potentialItemDrop'],
+      relations: ['potential_item_drop'],
     });
   }
 
@@ -41,7 +41,7 @@ export class MonstersService {
     await this.monstersRepository.update({ id: monsterId }, newMonstersInfos);
     return this.monstersRepository.findOne({
       where: { monsterId },
-      relations: ['potentialItemDrop'],
+      relations: ['potential_item_drop'],
     });
   }
 
@@ -53,14 +53,14 @@ export class MonstersService {
     await this.monsterItemsService.saveItem(monsterId, itemId, dropRate);
     return this.monstersRepository.findOne({
       where: { id: monsterId },
-      relations: ['potentialItemDrop'],
+      relations: ['potential_item_drop'],
     });
   }
 
   async getMonster(id: number): Promise<MonsterInfoDto> {
     const monsterInfo = await this.monstersRepository.findOne({
       where: { id },
-      relations: ['potentialItemDrop'],
+      relations: ['potential_item_drop'],
     });
 
     if (!monsterInfo) {

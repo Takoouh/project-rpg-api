@@ -7,7 +7,7 @@ export class MonsterItemsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => MonsterEntity, (monster) => monster.potentialItemDrop, {
+  @ManyToOne(() => MonsterEntity, (monster) => monster.potential_item_drop, {
     cascade: true,
   })
   monster: MonsterEntity;
@@ -19,5 +19,5 @@ export class MonsterItemsEntity {
   item: ItemsEntity;
 
   @Column({ nullable: false })
-  dropRate: number;
+  drop_rate: number;
 }

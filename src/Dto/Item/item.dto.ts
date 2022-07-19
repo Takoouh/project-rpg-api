@@ -5,10 +5,10 @@ export class ItemDto {
   id: number;
 
   @IsString()
-  item_name: string;
+  name: string;
 
   @IsString()
-  item_desc: string;
+  desc: string;
 
   @IsString()
   type: string;
@@ -20,10 +20,10 @@ export class ItemDto {
   price: number;
 
   @IsNumber()
-  strength: number;
+  selling_price: number;
 
-  @IsNumber()
-  speed: number;
+  @IsString()
+  effect: string;
 }
 
 export class ItemListDto {

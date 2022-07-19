@@ -6,10 +6,10 @@ export class ItemsEntity {
   id: number;
 
   @Column({ nullable: false })
-  item_name: string;
+  name: string;
 
   @Column({ nullable: true })
-  item_desc: string;
+  desc: string;
 
   @Column({ nullable: false })
   type: string;
@@ -20,9 +20,9 @@ export class ItemsEntity {
   @Column({ nullable: true })
   price: number;
 
-  @Column({ nullable: false })
-  strength: number;
+  @Column({ nullable: true })
+  selling_price: number;
 
-  @Column({ nullable: false })
-  speed: number;
+  @Column({ nullable: true })
+  effect: string;
 }

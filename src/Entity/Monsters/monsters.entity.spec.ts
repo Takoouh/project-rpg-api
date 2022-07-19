@@ -1,4 +1,4 @@
-import { MonsterEntity } from './monster.entity';
+import { MonsterEntity } from './monsters.entity';
 
 describe('MonsterEntity', () => {
   it('should be defined', () => {

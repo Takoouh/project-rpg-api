@@ -14,11 +14,11 @@ export class MonsterItemsService {
   saveItem(
     monsterId: number,
     itemId: number,
-    dropRate: number,
+    drop_rate: number,
   ): Promise<MonsterItemDto> {
     return this.monsterItemsRepository.save({
       item: { id: itemId },
-      dropRate,
+      drop_rate,
       monster: { id: monsterId },
     });
   }

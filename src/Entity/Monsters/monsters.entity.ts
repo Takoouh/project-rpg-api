@@ -24,5 +24,5 @@ export class MonsterEntity {
   experience: number;
 
   @OneToMany(() => MonsterItemsEntity, (monstersItems) => monstersItems.monster)
-  potentialItemDrop: MonsterItemsEntity[];
+  potential_item_drop: MonsterItemsEntity[];
 }
