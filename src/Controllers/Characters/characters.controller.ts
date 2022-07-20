@@ -7,6 +7,7 @@ import {
   Delete,
   Patch,
 } from '@nestjs/common';
+import { CharacterItemsTableDto } from 'src/Dto/Character/characterItem.dto';
 import { CharacterItemsService } from 'src/Services/Characters/characterItems.service';
 import {
   CharacterTableDto,
@@ -52,7 +53,7 @@ export class CharactersController {
   @Post('/:characterId/addItem/:itemId')
   addItemToCharacter(
     @Param() { characterId, itemId }: { characterId: number; itemId: number },
-  ): Promise<CharacterFullInfosDto> {
+  ): Promise<CharacterItemsTableDto> {
     return this.characterItemsService.addItemToCharacter(characterId, itemId);
   }
 
@@ -76,5 +77,16 @@ export class CharactersController {
     { characterId, stat }: { characterId: number; stat: string },
   ): Promise<CharacterFullInfosDto> {
     return this.charactersService.attributeSkillPoint(characterId, stat);
+  }
+
+  @Patch('/:characterId/use-item/:itemId')
+  useItem(
+    @Param('characterId') characterId: string,
+    @Param('itemId') itemId: string,
+  ): Promise<CharacterFullInfosDto> {
+    return this.charactersService.useItem(
+      parseInt(characterId),
+      parseInt(itemId),
+    );
   }
 }

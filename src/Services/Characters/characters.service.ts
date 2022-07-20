@@ -7,18 +7,23 @@ import {
   CharacterFullInfosDto,
   CharacterEditInfoDto,
   CharacterMinimumInfosDto,
+  CharacterTableWithItemsDto,
 } from '../../Dto/Character/character.dto';
 import { CharactersEntity } from '../../Entity/Characters/characters.entity';
 import { formatCharactersInfos } from '../../Helpers/CharactersHelper/charactersHelpers';
 
 import { PlacesService } from '../Places/places.service';
 import * as LEVELING_GRID from '../../Data/leveling_grid.json';
+import { resolveCharacterEffects } from 'src/Helpers/EffectsHelper/EffectsHelper';
+import { CharacterItemsService } from './characterItems.service';
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(CharactersEntity)
     private charactersRepository: Repository<CharactersEntity>,
+    @Inject(forwardRef(() => CharacterItemsService))
+    private readonly characterItemsService: CharacterItemsService,
     @Inject(forwardRef(() => PlacesService))
     private readonly placesService: PlacesService,
   ) {}
@@ -197,5 +202,43 @@ export class CharactersService {
       };
       return this.updateCharacter(characterId, newCharacterStats);
     }
+  }
+
+  /**
+   * Use item and resolve it's effect, then delete the item from inventory
+   * @param {number} characterId
+   * @param {number} itemId
+   * @returns {Promise<CharacterFullInfosDto>} characted with item's effect resolved and item consummed
+   */
+  async useItem(
+    characterId: number,
+    itemId: number,
+  ): Promise<CharacterFullInfosDto> {
+    const character: CharacterTableWithItemsDto =
+      await this.charactersRepository.findOne({
+        where: { id: characterId },
+        relations: ['items'],
+      });
+
+    const itemToUse = character.items.find(
+      (itemStack) => itemStack.item.id === itemId && itemStack.quantity > 0,
+    );
+
+    //we check if Character does have this item with at least 1 quantity
+    if (!itemToUse.quantity) {
+      throw new Error("You don't have this item");
+    }
+
+    delete character.items;
+    delete character.place;
+
+    const updatedCharacter: CharacterEditInfoDto = resolveCharacterEffects(
+      itemToUse.item.effect,
+      character,
+    );
+
+    await this.characterItemsService.deleteCharacterItem(characterId, itemId);
+
+    return this.updateCharacter(characterId, updatedCharacter);
   }
 }
