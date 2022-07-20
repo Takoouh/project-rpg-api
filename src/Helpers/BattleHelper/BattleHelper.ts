@@ -7,7 +7,7 @@ export const attributeMonsterLoot = (
   const acquiredLoot: ItemDto[] = [];
   potential_item_drop.forEach((drop) => {
     const randomNumber = Math.random() * 100;
-    if (drop.drop_rate <= randomNumber) {
+    if (drop.drop_rate >= randomNumber) {
       acquiredLoot.push(drop.item);
     }
   });
