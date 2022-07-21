@@ -36,4 +36,15 @@ export class BattleController {
   ): Promise<BattleInfoDto> {
     return this.battleService.playerAttack(battleId);
   }
+
+  @Patch('/:battleId/use-item/:itemId')
+  playerUseItemInBattle(
+    @Param('battleId') battleId: string,
+    @Param('itemId') itemId: string,
+  ): Promise<BattleInfoDto> {
+    return this.battleService.playerUseItem(
+      parseInt(battleId),
+      parseInt(itemId),
+    );
+  }
 }

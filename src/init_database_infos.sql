@@ -12,4 +12,5 @@ INSERT INTO monsters (id, monster_name, life_points, strength, speed, gold, expe
   (4, 'Goblin', 20, 6, 5, 10, 15);
 
 INSERT INTO "monstersItemsList" ("monsterId", "itemId", drop_rate) VALUES
-  (3, 1, 35);
+  (3, 1, 35),
+  (4, 1, 50);
